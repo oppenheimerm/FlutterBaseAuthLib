@@ -230,11 +230,15 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Center(
-                    child: ImageIcon(AssetImage('assets/facebook.png')),
+                    /*child: ImageIcon(AssetImage('assets/google_logo.png')),*/
+                    child: Image(
+                      image: AssetImage('assets/google_logo.png'),
+                      height: 24.0,
+                    ),
                   ),
                   SizedBox(width: 10.0,),
                   Center(
-                    child: Text("Log in with Facebook",
+                    child: Text("Sign In with Google",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: "Lato"

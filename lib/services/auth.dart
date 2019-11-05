@@ -142,8 +142,13 @@ class Auth implements AuthService {
   @override
   Future<User> currentUser() async {
     final FirebaseUser user = await _firebaseAuth.currentUser();
-    print("the current value of user is: ${user}");
-    return _userFromFirebase(null);
+    if(user != null){
+      print("the current value of user is: ${user}");
+    }else{
+      print("Current user not logged in.");
+    }
+
+    return _userFromFirebase(user);
   }
 
 
