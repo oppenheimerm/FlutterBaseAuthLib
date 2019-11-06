@@ -5,7 +5,7 @@ abstract class AuthService {
   Future<User> currentUser();
   Future<User> signInAnonymously();
   Future<User> signInWithEmailAndPassword(String email, String password);
-  Future<User> createUserWithEmailAndPassword(String email, String password);
+  Future<User> createUserWithEmailAndPassword(String email, String password,String username);
   Future<void> sendPasswordResetEmail(String email);
   Future<User> signInWithEmailAndLink({String email, String link});
   Future<bool> isSignInWithEmailLink(String link);
