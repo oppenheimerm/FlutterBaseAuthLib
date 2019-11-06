@@ -10,8 +10,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        overflow: Overflow.visible,
+        fit: StackFit.passthrough,
         children: <Widget>[
-          // clip screen in half and fill top half with black colout
+          // clip screen in half and fill top half with black colour
           // or background image
           ClipPath(
             child: Container(
@@ -62,50 +64,77 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 SizedBox(height: 25.0,),
-                Container(
-                  height: 30.0,
-                  width: 95.0,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(20.0),
-                    shadowColor: Colors.greenAccent,
-                    color: Colors.green,
-                    elevation: 7.0,
-                    child: GestureDetector(
-                      onTap: (){},
-                      child: Center(
-                        child: Text(
-                          'Edit Name',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Raleway'
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    SizedBox(width: 10.0,),
+                    Container(
+                      height: 30.0,
+                      width: 95.0,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(20.0),
+                        shadowColor: Colors.greenAccent,
+                        color: Colors.green,
+                        elevation: 7.0,
+                        child: GestureDetector(
+                          onTap: (){},
+                          child: Center(
+                            child: Text(
+                              'Edit Name',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Raleway'
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 25.0,),
-                Container(
-                  height: 30.0,
-                  width: 95.0,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(20.0),
-                    shadowColor: Colors.greenAccent,
-                    color: Colors.red,
-                    elevation: 7.0,
-                    child: GestureDetector(
-                      onTap: (){},
-                      child: Center(
-                        child: Text(
-                          'Logout',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Raleway'
+                    Container(
+                      height: 30.0,
+                      width: 95.0,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(20.0),
+                        shadowColor: Colors.greenAccent,
+                        color: Colors.red,
+                        elevation: 7.0,
+                        child: GestureDetector(
+                          onTap: (){},
+                          child: Center(
+                            child: Text(
+                              'Logout',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Raleway'
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                    Container(
+                      height: 30.0,
+                      width: 95.0,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(20.0),
+                        shadowColor: Colors.grey,
+                        color: Colors.blue,
+                        elevation: 7.0,
+                        child: GestureDetector(
+                          onTap: (){},
+                          child: Center(
+                            child: Text(
+                                'Edit Photo',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Raleway'
+                                )
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

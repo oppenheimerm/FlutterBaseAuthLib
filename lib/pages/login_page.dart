@@ -2,19 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:base_auth_lib/services/auth_service.dart';
 import 'package:base_auth_lib/services/auth_provider.dart';
 import 'package:base_auth_lib/models/user.dart';
+import 'package:base_auth_lib/services/form_validation.dart';
 
-class EmailFieldValidator {
-  //  Note method is 'static' and thus does not require instantiation
-  static String validate(String value) {
-    return value.isEmpty ? 'Email can\'t be empty' : null;
-  }
-}
-
-class PasswordFieldValidator {
-  static String validate(String value) {
-    return value.isEmpty ? 'Password can\'t be empty' : null;
-  }
-}
 
 class LoginPage extends StatefulWidget {
   const LoginPage({this.onSignedIn});
@@ -32,9 +21,20 @@ enum FormType {
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+
   String _email;
   String _password;
+  String _displayName;
   FormType _formType = FormType.login;
+  //  ‘autovalidate’ is used to validate the input as soon as we enter the data.
+  //  Initially it is set it to false.  The reason that it is initially set to
+  //  false, is because when the user opens the form, all the fields will by
+  //  default empty, and an empty field is invalid. We don’t want to show such
+  //  an invalid error.
+  //
+  //  Once the user submits the form, if there are any validation error then
+  //  we'll start validating the input automatically by updating _autoValidate to true.
+  bool _autoValidate = false;
 
   bool validateAndSave() {
     final FormState form = formKey.currentState;
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
           final User _user = await authService.signInWithEmailAndPassword(_email, _password);
           print('Signed in: ${_user.uid}');
         } else {
-          final User _user = await authService.createUserWithEmailAndPassword(_email, _password);
+          final User _user = await authService.createUserWithEmailAndPassword(_email, _password, _displayName);
           print('Registered user: ${_user.uid}');
         }
         widget.onSignedIn();
@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      //resizeToAvoidBottomInset: false,
       body: ListView(
         children: <Widget>[
           //  Hero title
@@ -120,6 +120,7 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
             child: Form(
               key:formKey,
+              autovalidate: _autoValidate,
               child: Column(
                 children: buildInputs() + buildSubmitButtons(),
               ),
@@ -132,55 +133,124 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   List<Widget> buildInputs() {
-    return <Widget>[
-      //  Email entry
-      TextFormField(
-        key: Key('email'),
-        decoration: InputDecoration(labelText: 'Email', labelStyle: TextStyle(
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.bold,
-            color: Colors.grey
-        ),
-          //style focus underline colour
-          focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.green)
+
+
+    if (_formType == FormType.register) {
+      return <Widget>[
+        //  Email entry
+        TextFormField(
+          key: Key('email'),
+          decoration: InputDecoration(labelText: 'Email', labelStyle: TextStyle(
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.bold,
+              color: Colors.grey
           ),
-        ),
-        validator: EmailFieldValidator.validate /*longhand version - (value) => EmailFieldValidator.validate(value)*/,
-        onSaved: (String value) => _email = value,
-      ),
-      SizedBox(height:20.0),
-      //  Password entry
-      TextFormField(
-        key: Key('password'),
-        decoration: InputDecoration(labelText: 'Password', labelStyle: TextStyle(
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.bold,
-            color: Colors.grey
-        ),
+            //style focus underline colour
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.green)
-            )),
-        obscureText: true,
-        validator: PasswordFieldValidator.validate,
-        onSaved: (String value) => _password = value,
-      ),
-
-      Container(
-        alignment: Alignment(1.0, 0.0),
-        padding: EdgeInsets.only(top:15.0, left: 20.0),
-        child: InkWell(
-          child: Text('Forgot Password',
-            style: TextStyle(color: Colors.green,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Lato',
-                decoration: TextDecoration.underline),),
-          onTap: (){},
+            ),
+          ),
+          validator: EmailFieldValidator.validate /*longhand version - (value) => EmailFieldValidator.validate(value)*/,
+          onSaved: (String value) => _email = value,
         ),
-      ),
-      SizedBox(height: 20.0),
+        SizedBox(height:20.0),
+        //  Password entry
+        TextFormField(
+          key: Key('password'),
+          decoration: InputDecoration(labelText: 'Password', labelStyle: TextStyle(
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.bold,
+              color: Colors.grey
+          ),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green)
+              )),
+          obscureText: true,
+          validator: PasswordFieldValidator.validate,
+          onSaved: (String value) => _password = value,
+        ),
 
-    ];
+        SizedBox(height:20.0),
+        TextFormField(
+          key: Key('displayname'),
+          decoration: InputDecoration(labelText: 'Display name', labelStyle: TextStyle(
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.bold,
+              color: Colors.grey
+          ),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green)
+              )),
+          validator: DisplayNameValidator.validate,
+          onSaved: (String value) => _displayName = value,
+        ),
+
+
+
+        Container(
+          alignment: Alignment(1.0, 0.0),
+          padding: EdgeInsets.only(top:15.0, left: 20.0),
+          child: InkWell(
+            child: Text('Forgot Password',
+              style: TextStyle(color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Lato',
+                  decoration: TextDecoration.underline),),
+            onTap: (){},
+          ),
+        ),
+        SizedBox(height: 20.0),
+      ];
+    }else{
+      return <Widget>[
+        //  Email entry
+        TextFormField(
+          key: Key('email'),
+          decoration: InputDecoration(labelText: 'Email', labelStyle: TextStyle(
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.bold,
+              color: Colors.grey
+          ),
+            //style focus underline colour
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.green)
+            ),
+          ),
+          validator: EmailFieldValidator.validate /*longhand version - (value) => EmailFieldValidator.validate(value)*/,
+          onSaved: (String value) => _email = value,
+        ),
+        SizedBox(height:20.0),
+        //  Password entry
+        TextFormField(
+          key: Key('password'),
+          decoration: InputDecoration(labelText: 'Password', labelStyle: TextStyle(
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.bold,
+              color: Colors.grey
+          ),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green)
+              )),
+          obscureText: true,
+          validator: PasswordFieldValidator.validate,
+          onSaved: (String value) => _password = value,
+        ),
+        Container(
+          alignment: Alignment(1.0, 0.0),
+          padding: EdgeInsets.only(top:15.0, left: 20.0),
+          child: InkWell(
+            child: Text('Forgot Password',
+              style: TextStyle(color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Lato',
+                  decoration: TextDecoration.underline),),
+            onTap: (){},
+          ),
+        ),
+        SizedBox(height: 20.0),
+      ];
+    }
+
   }
 
   List<Widget> buildSubmitButtons() {
