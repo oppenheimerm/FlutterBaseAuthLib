@@ -21,6 +21,10 @@ dependencies:
     sdk: flutter
   firebase_auth: ^0.14.0+5
   google_sign_in: ^4.0.7
+  provider: ^3.1.0+1
+  get_it: ^3.0.3
+  firebase_database: ^3.1.0
+  cloud_firestore:
   # Sticking to 2.0.1 as version 3.0 generates compile errors for me on iOS
   #flutter_facebook_login: ^2.0.1
   # The following adds the Cupertino Icons font to your application.
@@ -62,6 +66,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Archivo
+      fonts:
+        - asset: fonts/Archivo-Regular.ttf
+          weight: 400
+        - asset: fonts/Archivo-Medium.ttf
+          weight: 500
+        - asset: fonts/Archivo-SemiBold.ttf
+          weight: 600
+        - asset: fonts/Archivo-Bold.ttf
+          weight: 700
   # fonts:
   #   - family: Schyler
   #     fonts:
@@ -74,18 +89,5 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  fonts:
-    - family: Lato
-      fonts:
-        - asset: fonts/Lato-Black.ttf
-        - asset: fonts/Lato-BlackItalic.ttf
-        - asset: fonts/Lato-Bold.ttf
-        - asset: fonts/Lato-BoldItalic.ttf
-        - asset: fonts/Lato-Italic.ttf
-        - asset: fonts/Lato-Light.ttf
-        - asset: fonts/Lato-LightItalic.ttf
-        - asset: fonts/Lato-Regular.ttf
-        - asset: fonts/Lato-Thin.ttf
-        - asset: fonts/Lato-ThinItalic.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
