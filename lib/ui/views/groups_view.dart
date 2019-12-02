@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Dashboard extends StatelessWidget {
+class GroupsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text(
-            "Home Page"
-        ),
+        child: Text("GROUPS PAGE VIEW"),
       ),
     );
   }

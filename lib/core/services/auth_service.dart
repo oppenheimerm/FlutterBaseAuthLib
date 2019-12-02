@@ -1,5 +1,7 @@
+import 'dart:async';
+
+import 'package:base_auth_lib/core/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:base_auth_lib/models/user.dart';
 
 abstract class AuthService {
   Future<User> currentUser();
@@ -20,7 +22,7 @@ abstract class AuthService {
   });
   Future<User> signInWithGoogle();
   //Future<User> signInWithFacebook();
-  Future<void> signOut();
-  Stream<User> get onAuthStateChanged;
+  Future<void> signOut(BuildContext context);
   void dispose();
+  StreamController<User> getStreamController();
 }
